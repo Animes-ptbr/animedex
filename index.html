@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Anroll - Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --dark-bg: #000000;
+      --card-bg: #111111;
+      --accent: #ff2d55;
+      --light-text: #e0e0e0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark-bg);
+      color: white;
+      overflow-x: hidden;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* MENU LATERAL - agora fixo no PC */
+    .drawer {
+      position: fixed;
+      top: 0;
+      left: -260px;
+      width: 260px;
+      height: 100%;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(12px);
+      transition: left 0.3s ease;
+      z-index: 30;
+      padding: 24px 20px;
+      border-right: 1px solid #222;
+      overflow-y: auto;
+    }
+
+    .drawer.open {
+      left: 0;
+    }
+
+    .drawer .profile {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .drawer .profile img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 2px solid #444;
+      margin-bottom: 10px;
+    }
+
+    .drawer .profile h3 {
+      font-size: 1em;
+      margin-bottom: 4px;
+    }
+
+    .drawer .profile small {
+      font-size: 0.8em;
+      color: #aaa;
+    }
+
+    .drawer nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--light-text);
+      text-decoration: none;
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      transition: background 0.2s;
+    }
+
+    .drawer nav a:hover {
+      background: #222;
+    }
+
+    .drawer nav a i {
+      width: 20px;
+      text-align: center;
+    }
+
+    /* HEADER */
+    header {
+      backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      border-bottom: 1px solid #111;
+      height: 56px;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.5em;
+      color: var(--accent);
+    }
+
+    .menu-toggle {
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 21;
+      display: block;
+    }
+
+    /* CONTEÚDO PRINCIPAL */
+    main {
+      margin-top: 56px;
+      padding: 20px;
+      flex-grow: 1;
+      margin-left: 0;
+      transition: margin-left 0.3s ease;
+    }
+
+    /* DESTAQUE */
+    .destaque {
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      padding: 24px;
+      min-height: 460px;
+      display: flex;
+      align-items: flex-end;
+      border-bottom: 1px solid #111;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .destaque::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, #000 10%, transparent 80%);
+      z-index: 0;
+      border-radius: 12px;
+    }
+
+    .destaque-content {
+      position: relative;
+      display: flex;
+      z-index: 1;
+    }
+
+    .destaque-thumb {
+      width: 130px;
+      height: 190px;
+      border-radius: 12px;
+      margin-right: 20px;
+      object-fit: cover;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+    }
+
+    .destaque-info h2 {
+      font-size: 1.6em;
+      margin-bottom: 8px;
+    }
+
+    .destaque-info p {
+      font-size: 0.9em;
+      color: #bbb;
+      margin-bottom: 14px;
+      max-width: 400px;
+    }
+
+    .destaque-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .destaque-buttons button {
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .destaque-buttons button:first-child {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 4px 14px rgba(255, 45, 85, 0.4);
+    }
+
+    .destaque-buttons button:last-child {
+      background: transparent;
+      border: 2px solid #fff;
+      color: #fff;
+    }
+
+    /* TITULOS DE SESSÃO */
+    .section-title {
+      font-size: 1.4em;
+      margin: 20px 0 10px;
+      padding-left: 8px;
+    }
+
+    /* LINHAS DE SCROLL/GRID */
+    .scroll-row {
+      display: flex;
+      overflow-x: auto;
+      padding-bottom: 16px;
+      gap: 12px;
+      scroll-behavior: smooth;
+    }
+
+    /* CARTÕES */
+    .item-card {
+      flex: 0 0 auto;
+      width: 140px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--card-bg);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .item-card:hover {
+      transform: scale(1.05);
+    }
+
+    .item-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    /* MEDIA QUERIES PARA DESKTOP */
+    @media(min-width: 900px) {
+      body {
+        overflow-x: hidden;
+      }
+
+      .drawer {
+        left: 0;
+      }
+
+      .menu-toggle {
+        display: none;
+      }
+
+      main {
+        margin-left: 260px;
+        padding: 40px;
+      }
+
+      .scroll-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 16px;
+        overflow-x: unset;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MENU LATERAL -->
+  <div class="drawer" id="drawer">
+    <div class="profile">
+      <img src="https://i.pinimg.com/736x/bf/61/35/bf6135da514102f7afe1005242ce76bd.jpg" alt="Avatar do Criador">
+      <h3>Canal FDS-KKKK</h3>
+      <small>@leuegay</small>
+    </div>
+    <nav>
+      <a href="#"><i class="fas fa-globe"></i> Dublado</a>
+      <a href="#"><i class="fas fa-closed-captioning"></i> Legendado</a>
+      <a href="#"><i class="fas fa-fire"></i> Lançamentos</a>
+    </nav>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">FDS BRASIL</div>
+    <div class="menu-toggle" onclick="toggleDrawer()">☰</div>
+  </header>
+
+  <main>
+    <!-- DESTAQUE -->
+    <section class="destaque" id="destaque"></section>
+
+    <h3 class="section-title">Últimos Filmes</h3>
+    <div class="scroll-row" id="ultimos-filmes"></div>
+
+    <h3 class="section-title">Últimas Séries</h3>
+    <div class="scroll-row" id="ultimas-series"></div>
+  </main>
+
+  <script>
+    function toggleDrawer() {
+      const drawer = document.getElementById("drawer");
+      drawer.classList.toggle("open");
+    }
+
+    async function carregarConteudo() {
+      try {
+        const res = await fetch("https://api.jikan.moe/v4/anime?start_date=2024-01-01&limit=20&sfw=true&order_by=popularity");
+        const data = await res.json();
+        const lista = data.data;
+
+        const destaque = lista[0];
+        const filmes = lista.slice(1, 7);
+        const series = lista.slice(7, 13);
+
+        document.getElementById("destaque").style.backgroundImage = `url(${destaque.images.jpg.large_image_url})`;
+        document.getElementById("destaque").innerHTML = `
+          <div class="destaque-content">
+            <img class="destaque-thumb" src="${destaque.images.jpg.image_url}" alt="${destaque.title}">
+            <div class="destaque-info">
+              <div>Olá <b>Usuario</b></div>
+              <p>Aproveite seu filme favorito</p>
+              <h2>${destaque.title}</h2>
+              <p>${destaque.synopsis?.substring(0, 120) || 'Sem sinopse disponível.'}...</p>
+              <div class="destaque-buttons">
+                <button>▶ Assistir</button>
+                <button>+ Add minha list</button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        const filmesContainer = document.getElementById("ultimos-filmes");
+        filmesContainer.innerHTML = '';
+        filmes.forEach(anime => {
+          filmesContainer.innerHTML += `
+            <div class="item-card" title="${anime.title}">
+              <img src="${anime.images.jpg.image_url}" alt="${anime.title}">
+            </div>
+          `;
+        });
+
+        const seriesContainer = document.getElementById("ultimas-series");
+        seriesContainer.innerHTML = '';
+        series.forEach(anime => {
+          seriesContainer.innerHTML += `
+            <div class="item-card" title="${anime.title}">
+              <img src="${anime.images.jpg.image_url}" alt="${anime.title}">
+            </div>
+          `;
+        });
+
+      } catch (e) {
+        console.error("Erro ao carregar conteúdo:", e);
+      }
+    }
+
+    carregarConteudo();
+  </script>
+
+</body>
+</html>
